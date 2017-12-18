@@ -10,12 +10,13 @@
     <packaging>war</packaging>
     
     <properties>
-        
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <failOnMissingWebXml>false</failOnMissingWebXml>
         
         <bootstrap.version>3.3.7-1</bootstrap.version>
         <jquery.version>1.11.1</jquery.version>
+        
+        <jetty.version>9.4.8.v20171121</jetty.version>
     </properties>
     
     <dependencies>
@@ -31,8 +32,6 @@
         </dependency>
         
     </dependencies>
-
-
 
     <build>
         <finalName>${project.artifactId}</finalName>
@@ -59,118 +58,25 @@
                 </configuration>
             </plugin>
 
+            <plugin>
+                <groupId>org.eclipse.jetty</groupId>
+                <artifactId>jetty-maven-plugin</artifactId>
+                <version>${jetty.version}</version>
+                <executions>
+                    <execution>
+                        <phase>pre-integration-test</phase>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <scanIntervalSeconds>10</scanIntervalSeconds>
+                    <webAppSourceDirectory>${project.build.directory}/${project.artifactId}</webAppSourceDirectory>
+                </configuration>
+            </plugin>
         </plugins>
+        
     </build>
-
-    <profiles>
-        <!-- Activate using the swarm property: mvn clean install -Dswarm -->
-        <profile>
-            <id>jetty</id>
-            <activation>
-                <property>
-                    <name>jetty</name>
-                </property>
-            </activation>
-            
-            <properties>
-                <jetty.version>9.4.8.v20171121</jetty.version>
-            </properties>
-            <build>
-                <plugins>
-                    <plugin>
-                        <groupId>org.eclipse.jetty</groupId>
-                        <artifactId>jetty-maven-plugin</artifactId>
-                        <version>${jetty.version}</version>
-                        <executions>
-                            <execution>
-                                <phase>pre-integration-test</phase>
-                                <goals>
-                                    <goal>run</goal>
-                                </goals>
-                            </execution>
-                        </executions>
-                        <configuration>
-                            <scanIntervalSeconds>10</scanIntervalSeconds>
-                            <webAppSourceDirectory>${project.build.directory}/${project.artifactId}</webAppSourceDirectory>
-                          </configuration>
-                    </plugin>
-                    
-                </plugins>
-            </build>
-        </profile>
-        
-        <!-- Activate using the swarm property: mvn clean install -Dswarm -->
-        <profile>
-            <id>swarm</id>
-            <activation>
-                <property>
-                    <name>swarm</name>
-                </property>
-            </activation>
-            
-            <properties>
-                <wildfly.version>2017.12.0</wildfly.version>
-            </properties>
-            
-            <dependencyManagement>
-                <dependencies>
-                    <dependency>
-                        <groupId>org.wildfly.swarm</groupId>
-                        <artifactId>bom-all</artifactId>
-                        <version>${wildfly.version}</version>
-                        <type>pom</type>
-                        <scope>import</scope>
-                    </dependency>
-                </dependencies>
-            </dependencyManagement>
-            
-            <build>
-                <plugins>
-                    <plugin>
-                        <groupId>org.wildfly.swarm</groupId>
-                        <artifactId>wildfly-swarm-plugin</artifactId>
-                        <version>${wildfly.version}</version>
-                        <executions>
-                            <execution>
-                                <id>1</id>
-                                <phase>pre-integration-test</phase>
-                                <goals>
-                                    <goal>package</goal>
-                                </goals>
-                            </execution>
-                        </executions>
-                        <configuration>
-                            <hollow>true</hollow>
-                        </configuration>
-                    </plugin>
-                    
-                    <plugin>
-                        <groupId>org.codehaus.mojo</groupId>
-                        <artifactId>exec-maven-plugin</artifactId>
-                        <version>1.6.0</version>
-                        <executions>
-                            <execution>
-                                <id>1</id>
-                                <phase>post-integration-test</phase>
-                                <goals>
-                                    <goal>exec</goal>
-                                </goals>
-                            </execution>
-                        </executions>
-                        <configuration>
-                            <executable>java</executable>
-                            <arguments>
-                                <argument>-jar</argument>
-                                <argument>${project.build.directory}/${project.artifactId}-hollow-swarm.jar</argument>
-                                <argument>${project.build.directory}/${project.artifactId}.war</argument>
-                            </arguments>
-                        </configuration>
-                      </plugin>
-                </plugins>
-            </build>
-        </profile>    
-        
-    </profiles>
-
 
 </project>

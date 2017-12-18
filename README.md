@@ -1,11 +1,9 @@
 # Webjars sample application
 
-This app demonstate how webjars works in a servlet container.
+This app demonstrate how webjars works in a Jetty servlet container.
 
-### Jetty
-To run in Jetty: `mvn clean install -P jetty`
+To run: `mvn clean install`
 
-### Wildfly swarm
-To run in Wildfly swarm: `mvn clean install -P swarm`
+Go to http://localhost:8080 to test
 
-Test page at http://localhost:8080
+Also see https://github.com/webjars/sample-wildfly-swarm for an example in Wildfly Swarm
