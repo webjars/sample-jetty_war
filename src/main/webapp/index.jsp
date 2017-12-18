@@ -1,10 +1,11 @@
+<%@ taglib uri="http://www.webjars.org/tags" prefix="wj"%>
 <!DOCTYPE html>
 <html>
     <head>
         <title>WebJars Sample - Jetty WAR</title>
-        <link rel='stylesheet' href='<%= org.webjars.AssetLocator.getWebJarPath("css/bootstrap.min.css") %>'>
-        <script type='text/javascript' src='<%= org.webjars.AssetLocator.getWebJarPath("jquery.min.js") %>'></script>
-        <script type='text/javascript' src='<%= org.webjars.AssetLocator.getWebJarPath("js/bootstrap.min.js") %>'></script>
+        <link rel='stylesheet' href='<wj:locate path="css/bootstrap.min.css" relativeTo="META-INF/resources"/>'>
+        <script type='text/javascript' src='<wj:locate path="jquery.min.js" relativeTo="META-INF/resources"/>'></script>
+        <script type='text/javascript' src='<wj:locate path="js/bootstrap.min.js" relativeTo="META-INF/resources"/>'></script>
         <style type="text/css">
             body {
                 margin-top: 50px;
@@ -19,10 +20,10 @@
         </script>
     </head>
     <body>
-        
+
         <div class="container">
-            
-            
+
+
             <nav class="navbar navbar-default">
                 <div class="container-fluid">
                     <div class="navbar-header">
@@ -32,7 +33,7 @@
                     </div>
                 </div>
             </nav>
-            
+
             <button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">Show a Modal</button>
 
 
